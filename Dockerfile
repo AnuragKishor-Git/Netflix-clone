@@ -16,7 +16,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=builder /app/dist .
 RUN addgroup -S nginxgroup && adduser -S nginxuser -G nginxgroup \
-    && chown -R nginxuser:nginxgroup /usr/share/nginx/html /etc
+    && chown -R nginxuser:nginxgroup /usr/share/nginx/html /etc /var
 
 # Switch to the non-root user
 USER nginxuser
