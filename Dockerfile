@@ -1,7 +1,7 @@
 #FROM node:18 AS builder
 FROM node:alpine AS builder
 #Create a non-root user
-RUN group -r dkrflow && useradd -r -g dkrflow -s /bin/false dkrflow
+RUN groupadd -r dkrflow && useradd -r -g dkrflow -s /bin/false dkrflow
 
 #Create an Application directory andd set permissions
 RUN mkdir /app && chown dkrflow:dkrflow /app
