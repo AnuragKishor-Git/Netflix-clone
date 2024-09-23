@@ -16,12 +16,11 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=builder /app/dist .
 RUN addgroup -S nginxgroup && adduser -S nginxuser -G nginxgroup \
-    && chown -R nginxuser:nginxgroup /usr/share/nginx/html
+    && chown -R nginxuser:nginxgroup /usr/share/nginx/html /app
 
 # Switch to the non-root user
 USER nginxuser
 # Expose port 80
 EXPOSE 80
 # Start Nginx
-#CMD ["nginx", "-g", "daemon off;"]
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
