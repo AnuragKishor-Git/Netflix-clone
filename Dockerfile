@@ -1,12 +1,14 @@
 #FROM node:18 AS builder
 FROM node:alpine AS builder
 #Create a non-root user
-RUN groupadd -r dkrflow && useradd -r -g dkrflow -s /bin/false dkrflow
+#RUN groupadd -r dkrflow && useradd -r -g dkrflow -s /bin/false dkrflow  -->not working
+RUN addgroup -S dkrflow && adduser -S dkrflow -G dkrflow \
+#   && chown -R dkrflow:dkrflow /usr/share/nginx/html
 
 #Create an Application directory andd set permissions
-RUN mkdir /app && chown dkrflow:dkrflow /app
-RUN mkdir /home/dkrflow && chown dkrflow:dkrflow /home/dkrflow
 
+#RUN mkdir /app && chown dkrflow:dkrflow /app
+#RUN mkdir /home/dkrflow && chown dkrflow:dkrflow /home/dkrflow
 #Update package list,install reuired package and clean up
 RUN apt-get update \
     && apt-get install -y libnghttp2-14 libde265-0 \
@@ -23,9 +25,6 @@ COPY ./yarn.lock .
 #RUN npm install
 RUN yarn install --network-timeout=300000
 COPY . .
-
-#switch to non-root user
-USER dkrflow
 
 ARG TMDB_V3_API_KEY
 ENV VITE_APP_TMDB_V3_API_KEY=${TMDB_V3_API_KEY}
